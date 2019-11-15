@@ -32,6 +32,6 @@ int remove_fim (Lista *l, void *info);
 void mostra_lista (Lista l, void (*mostra_info)(void*));
 
 void inicializa_conjuntos (Conjuntos *c, int x);
-int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void, void*));
-int uniao (Conjuntos c, void rep1, void rep2, int (*comp)(void, void*));
+int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void*, void*));
+int uniao (Conjuntos c, void* rep1, void* rep2, int (*comp)(void*, void*));
 void mostra_conjuntos (Conjuntos c, void (mostra)(void));

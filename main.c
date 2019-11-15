@@ -3,17 +3,17 @@
 #include "listas.h"
 
 void mostra_float (void *info){ //Mostra um dado float a partir de um ponteiro void
-	float *p = info;
+	float *p = (float*)info;
 	printf("%.2f\n", *p);
 }
 
 void mostra_int (void *info){ //Mostra um dado int a partir de um ponteiro void
-	int *p = info;
+	int *p = (int*)info;
 	printf("%d\n", *p);
 }
 
-void mostra_char (void *char){ //Mostra um dado char a partir de um ponteiro void
-	char *p = info;
+void mostra_char (void *info){ //Mostra um dado char a partir de um ponteiro void
+	char *p = (char*)info;
 	printf("%c\n", *p);
 }
 

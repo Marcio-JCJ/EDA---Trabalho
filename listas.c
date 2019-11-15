@@ -1,3 +1,7 @@
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "listas.h"
 
 void inicializa_lista (Lista *l, int tamanho){
