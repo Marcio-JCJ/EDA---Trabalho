@@ -1,2 +1,3 @@
-CMakeLists.txt
-cmake-build-debug/*
+$ cat .gitignore
+/CMakeLists.txt
+/cmake-build-debug/
