@@ -18,6 +18,6 @@ void mostra_char (void *info){ //Mostra um dado char a partir de um ponteiro voi
 }
 
 int main (){
-	printf("Tainha Vinho e muito....");
+	printf("Tainha Vinho e muito...");
 	return 0;
 }
