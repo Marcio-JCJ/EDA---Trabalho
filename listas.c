@@ -102,30 +102,58 @@ void mostra_lista (Lista l, void (*mostra_info)(void*)){
 		}
 	}
 }
-/*
-int CriaConjunto(Lista* list, int* n) {
-	Elemento* novo = (Elemento*)malloc(sizeof(Elemento));
-	if (novo == NULL) {
-		return 0;
-	}
-	novo->n = malloc(list->tamanhoInfo);
-	if (novo->n == NULL) {
-		free(novo);
-		return 0;
-	}
-	Elemento* p = list->cabeca;
-	while (p->proximo != NULL) {
-		// se nao fiz nada errado ele vai checar se o elemento
-		// nao e igual ao elemento que tem
-		// o problema e que pode ser uma lista dentro de um lista
-		if (novo->n == p->proximo) {
-			return ERRO;
-		}
-		p = p->proximo;
-	}
-	memcpy(novo->n, n, list->tamanhoInfo);
-	novo->proximo = list->cabeca;
-	list->cabeca = novo;
-	return 1; // Sucesso. } 
+
+int posicaoDoElemento(Lista *l, void *info, int(*comparaInfo)(void *, void*)){
+    if(lista_vazia(*l)){
+        printf("Lista vazia!\n");
+        return -2;
+    }
+    int pos=0;
+    Elemento *e=l->cabeca;
+    while(e!=NULL){
+        if(comparaInfo(info,e->info))
+            return pos;
+        pos++;
+        e=e->proximo;
+    }
+    return -1;
 }
-*/
+
+void inicializaConjuntos(Conjuntos *p, int x){
+    Lista lista;
+    inicializa_lista(&lista, sizeof(Lista));
+    p->multi=lista;
+    p->tamanho_info=x;
+}
+
+int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void*, void*)){
+    if(!lista_vazia(c.multi)){
+        Elemento* subListas = c.multi.cabeca->info;
+        while(subListas!=NULL){
+            if(posicaoDoElemento(subListas->info, representante, comp)!=-1){
+                return -1;
+            }
+            subListas=subListas->proximo;
+        }
+    }
+    Lista *l=malloc(sizeof(Lista));
+    inicializa_lista(l, c.tamanho_info);
+    if(insere_inicio(l,representante)==1) {
+        return insere_fim(&c.multi, l);
+    }
+    return -1;
+}
+
+int uniao(Conjuntos c, void* rep1, void* rep2, int(*comp)(void*,void*)){
+    
+}
+
+void mostra_conjuntos(Conjuntos c, void(mostra)(void*)){
+    if(lista_vazia(c.multi))
+        return;
+    Elemento *e=c.multi.cabeca;
+    while(e!=NULL){
+        mostra_lista(*(Lista*)e->info, mostra);
+        e=e->proximo;
+    }
+}
