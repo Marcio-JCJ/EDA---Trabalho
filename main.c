@@ -22,6 +22,6 @@ int compara(void *info1, void *info2){
 }
 
 int main (){
-	printf("ola mundo");
+	printf("Tainha Vinho e muito...");
 	return 0;
 }
