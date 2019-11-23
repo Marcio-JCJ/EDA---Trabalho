@@ -53,7 +53,7 @@ int insere_fim (Lista *l, void *info){
 		return ERRO_FALTA_DE_MEMORIA; 
 	
 	novo->info = malloc(l->tamanho_info);
-	if (novo->info = NULL){
+	if (novo->info == NULL){
 		free(novo);
 		return ERRO_FALTA_DE_MEMORIA;
 	}
@@ -103,7 +103,7 @@ void mostra_lista (Lista l, void (*mostra_info)(void*)){
 	}
 }
 
-int posicaoDoElemento(Lista *l, void *info, int(*comparaInfo)(void *, void*)){
+int posicao_do_elemento(Lista *l, void *info, int(*comparaInfo)(void *, void*)){
     if(lista_vazia(*l)){
         printf("Lista vazia!\n");
         return -2;
@@ -119,7 +119,7 @@ int posicaoDoElemento(Lista *l, void *info, int(*comparaInfo)(void *, void*)){
     return -1;
 }
 
-void inicializaConjuntos(Conjuntos *p, int x){
+void inicializa_conjuntos(Conjuntos *p, int x){
     Lista lista;
     inicializa_lista(&lista, sizeof(Lista));
     p->multi=lista;
@@ -130,7 +130,7 @@ int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void*, void*)){
     if(!lista_vazia(c.multi)){
         Elemento* subListas = c.multi.cabeca->info;
         while(subListas!=NULL){
-            if(posicaoDoElemento(subListas->info, representante, comp)!=-1){
+            if(posicao_do_elemento(subListas->info, representante, comp)!=-1){
                 return -1;
             }
             subListas=subListas->proximo;
@@ -144,15 +144,27 @@ int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void*, void*)){
     return -1;
 }
 
-int uniao(Conjuntos c, void* rep1, void* rep2, int(*comp)(void*,void*)){
-    
+int uniao(Conjuntos c, void* rep1/*, void* rep2, int(*comp)(void*,void*)*/){
+    if(!lista_vazia(c.multi)){
+        Elemento *e = c.multi.cabeca;
+
+        printf("%d", rep1);
+        /*
+        //e = e->proximo;
+        }else{
+            printf("tchau");
+        }
+        //e.proximo =
+         */
+    }
+    return 1;
 }
 
 void mostra_conjuntos(Conjuntos c, void(mostra)(void*)){
     if(lista_vazia(c.multi))
         return;
     Elemento *e=c.multi.cabeca;
-    while(e!=NULL){
+    while(e != NULL){
         mostra_lista(*(Lista*)e->info, mostra);
         e=e->proximo;
     }
