@@ -1,17 +1,18 @@
-
+#ifndef LISTAS_H
+#define LISTAS_H
 //Definicao das constantes (mensagens de ERRO)
 #define ERRO_LISTA_VAZIA -1;	
 #define ERRO_FALTA_DE_MEMORIA -2;
 
 
 //Definicao da struct elemento da lista
-typedef struct elemento{
+typedef struct Elemento{
 	void *info;
-	struct elemento *proximo;
+	struct Elemento *proximo;
 }Elemento;
 
 //Define struct cabecalho de lista
-typedef struct{
+typedef struct Lista{
 	int tamanho_info;
 	Elemento *cabeca;
 	int qtd;
@@ -29,3 +30,5 @@ int leNaPos(Lista *l, void *info, int pos);
 int removeDoInicio(Lista *l, void *info);
 int removeDoFim(Lista *l, void *info);
 int removeDaPos(Lista *l, void *info, int pos);
+
+#endif
