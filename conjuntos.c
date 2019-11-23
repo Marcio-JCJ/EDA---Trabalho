@@ -14,13 +14,8 @@ void inicializaConjuntos(Conjuntos *p, int x){
 
 int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void*, void*)){
     if(!lista_vazia(c.multi)){
-        Elemento* subListas = c.multi.cabeca;
-        while(subListas!=NULL){
-            if(posicaoDoElemento(subListas->info, representante, comp)!=-1){
-                return -1;
-            }
-            subListas=subListas->proximo;
-        }
+        if(conjuntosPossuemElemento(c, representante, comp ) == -1)
+            return -1;
     }
     Lista l;
     inicializa_lista(&l, c.tamanho_info);
