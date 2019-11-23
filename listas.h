@@ -14,14 +14,8 @@ typedef struct elemento{
 typedef struct{
 	int tamanho_info;
 	Elemento *cabeca;
+	int qtd;
 }Lista;
-
-//Define struct conjunto 
-typedef struct{
-	Lista multi;
-	int tamanho_info;
-}Conjuntos;
-
 
 void inicializa_lista (Lista *l, int tamanho);
 int lista_vazia (Lista l);
@@ -30,9 +24,8 @@ int remove_inicio (Lista *l, void *info);
 int insere_fim (Lista *l, void *info);
 int remove_fim (Lista *l, void *info);
 void mostra_lista (Lista l, void (*mostra_info)(void*));
-int posicaoDoElemento(Lista *l, void *info, int(*comparaInfo)(void *, void*));
-
-void inicializa_conjuntos (Conjuntos *c, int x);
-int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void*, void*));
-int uniao (Conjuntos c, void* rep1, void* rep2, int (*comp)(void*, void*));
-void mostra_conjuntos (Conjuntos c, void (mostra)(void*));
+int posicaoDoElemento(Lista *l, void *info, int(*comp)(void *, void*));
+int leNaPos(Lista *l, void *info, int pos);
+int removeDoInicio(Lista *l, void *info);
+int removeDoFim(Lista *l, void *info);
+int removeDaPos(Lista *l, void *info, int pos);

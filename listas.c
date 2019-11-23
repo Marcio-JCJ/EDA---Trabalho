@@ -7,6 +7,7 @@
 void inicializa_lista (Lista *l, int tamanho){
 	l->tamanho_info = tamanho;
 	l->cabeca = NULL;
+	l->qtd=0;
 }
 
 int lista_vazia (Lista l){
@@ -27,7 +28,7 @@ int insere_inicio (Lista *l, void *info){
 	memcpy(novo->info, info, l->tamanho_info);
 	novo->proximo = l->cabeca;
 	l->cabeca = novo;
-	
+	l->qtd++;
 	return 1; //Sucesso
 }
 
@@ -40,7 +41,7 @@ int remove_inicio (Lista *l, void *info){
 	free(p->info);
 	l->cabeca = p->proximo;
 	free(p);
-
+    l->qtd--;
 	return 1; //Sucesso
 }
 
@@ -65,7 +66,7 @@ int insere_fim (Lista *l, void *info){
 	memcpy(novo->info, info, l->tamanho_info);
 	novo->proximo = NULL;
 	p->proximo = novo;
-
+    l->qtd ++;
 	return 1; //Sucesso
 }
 
@@ -86,7 +87,7 @@ int remove_fim (Lista *l, void *info){
 	free(ultimo->info);
 	free(ultimo);
 	p->proximo = NULL;
-
+    l->qtd--;
 	return 1; //Sucesso
 }
 
@@ -103,7 +104,7 @@ void mostra_lista (Lista l, void (*mostra_info)(void*)){
 	}
 }
 
-int posicaoDoElemento(Lista *l, void *info, int(*comparaInfo)(void *, void*)){
+int posicaoDoElemento(Lista *l, void *info, int(*comp)(void *, void*)){
     if(lista_vazia(*l)){
         printf("Lista vazia!\n");
         return -2;
@@ -111,7 +112,7 @@ int posicaoDoElemento(Lista *l, void *info, int(*comparaInfo)(void *, void*)){
     int pos=0;
     Elemento *e=l->cabeca;
     while(e!=NULL){
-        if(comparaInfo(info,e->info))
+        if(comp(info,e->info))
             return pos;
         pos++;
         e=e->proximo;
@@ -119,41 +120,64 @@ int posicaoDoElemento(Lista *l, void *info, int(*comparaInfo)(void *, void*)){
     return -1;
 }
 
-void inicializaConjuntos(Conjuntos *p, int x){
-    Lista lista;
-    inicializa_lista(&lista, sizeof(Lista));
-    p->multi=lista;
-    p->tamanho_info=x;
-}
-
-int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void*, void*)){
-    if(!lista_vazia(c.multi)){
-        Elemento* subListas = c.multi.cabeca->info;
-        while(subListas!=NULL){
-            if(posicaoDoElemento(subListas->info, representante, comp)!=-1){
-                return -1;
-            }
-            subListas=subListas->proximo;
-        }
+int leNaPos(Lista *l, void *info, int pos){
+    if(pos<=l->qtd) {
+        printf("Posição não existe!\n");
+        return 1 == 0;
     }
-    Lista *l=malloc(sizeof(Lista));
-    inicializa_lista(l, c.tamanho_info);
-    if(insere_inicio(l,representante)==1) {
-        return insere_fim(&c.multi, l);
-    }
-    return -1;
-}
-
-int uniao(Conjuntos c, void* rep1, void* rep2, int(*comp)(void*,void*)){
-    
-}
-
-void mostra_conjuntos(Conjuntos c, void(mostra)(void*)){
-    if(lista_vazia(c.multi))
-        return;
-    Elemento *e=c.multi.cabeca;
-    while(e!=NULL){
-        mostra_lista(*(Lista*)e->info, mostra);
+    Elemento *e = l->cabeca;
+    for(int i=0; i!=pos; i++){
         e=e->proximo;
     }
+    memcpy(info, e->info, l->tamanho_info);
+
+    return 1;
+}
+
+int removeDaPos(Lista *l, void *info, int pos){
+    if(pos<0 || pos>=l->qtd || lista_vazia(*l))
+        return ERRO_LISTA_VAZIA;
+    if(pos==0)
+        return removeDoInicio(l, info);
+    if(pos==l->qtd-1)
+        return removeDoFim(l, info);
+    Elemento *p=l->cabeca;
+    for(int i=0; i<pos-1; i++){
+        p=p->proximo;
+    }
+    Elemento *removido=p->proximo;
+    p->proximo=p->proximo->proximo;
+    free(removido->info);
+    free(removido);
+    return 1;
+}
+
+int removeDoInicio(Lista *l, void *info){
+    if(lista_vazia(*l))
+        return ERRO_LISTA_VAZIA;
+    Elemento *p = l->cabeca;
+    memcpy(info, p->info, l->tamanho_info);
+    free(p->info);
+    l->cabeca=p->proximo;
+    free(p);
+    l->qtd--;
+    return 1;
+}
+
+int removeDoFim(Lista *l, void *info) {
+    if(lista_vazia(*l))
+        return ERRO_LISTA_VAZIA;
+    if(l->cabeca->proximo==NULL)
+        return removeDoInicio(l, info);
+    Elemento *p=l->cabeca;
+    while(p->proximo->proximo!=NULL){
+        p=p->proximo;
+    }
+    Elemento *ultimo=p->proximo;
+    memcpy(info, ultimo->info, l->tamanho_info);
+    free(ultimo->info);
+    free(ultimo);
+    p->proximo=NULL;
+    l->qtd--;
+    return 1;
 }

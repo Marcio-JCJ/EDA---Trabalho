@@ -17,6 +17,10 @@ void mostra_char (void *info){ //Mostra um dado char a partir de um ponteiro voi
 	printf("%c\n", *p);
 }
 
+int compara(void *info1, void *info2){
+    return info1==info2;
+}
+
 int main (){
 	printf("ola mundo");
 	return 0;
