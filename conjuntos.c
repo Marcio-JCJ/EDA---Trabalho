@@ -60,9 +60,12 @@ void mostra_conjuntos(Conjuntos *c, void(mostra)(void*)){
     if(lista_vazia(c->multi))
         return;
     Elemento *e=c->multi.cabeca;
+    int i=1;
     while(e!=NULL){
         Lista *l = e->info;
+        printf("Conjunto %d:",i);
         mostra_lista(*l, mostra);
+        i++;
         printf("\n");
         e=e->proximo;
     }
