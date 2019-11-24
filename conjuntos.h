@@ -9,11 +9,15 @@ typedef struct{
     int tamanho_info;
 }Conjuntos;
 
-void inicializa_conjuntos (Conjuntos *c, int x);
-int cria_conjunto (Conjuntos c, void *representante, int (*comp)(void*, void*));
-int uniao (Conjuntos c, void* rep1, void* rep2, int (*comp)(void*, void*));
-void mostra_conjuntos (Conjuntos c, void (mostra)(void*));
-int insereNoConjunto(Conjuntos c, void *info, int(*comp)(void*, void*), int pos);
-int conjuntosPossuemElemento(Conjuntos c, void *info, int(*comp)(void*, void*));
+void inicializaConjuntos(Conjuntos *c, int x);
+int cria_conjunto(Conjuntos *c, void *representante, int (*comp)(void*, void*));
+int uniao (Conjuntos *c, void* rep1, void* rep2, int (*comp)(void*, void*));
+void mostra_conjuntos(Conjuntos *c, void (mostra)(void*));
+int insereNoConjunto(Conjuntos *c, void *info, int(*comp)(void*, void*), int pos);
+int conjuntosPossuemElemento(Conjuntos *c, void *info, int(*comp)(void*, void*));
+int removeConjunto(Conjuntos *c, int pos);
+void limpaConjuntos(Conjuntos *c);
+void desalocaSubListas(Elemento *e);
+void desalocaElementosSubLista(Elemento *e);
 
 #endif

@@ -45,29 +45,26 @@ int remove_inicio (Lista *l, void *info){
     return 1; //Sucesso
 }
 
-int insere_fim (Lista *l, void *info){
-    if (lista_vazia(*l))
-        return insere_inicio (l, info);
-
-    Elemento *novo = malloc(sizeof(Elemento));
-    if (novo == NULL)
-        return ERRO_FALTA_DE_MEMORIA;
-
-    novo->info = malloc(l->tamanho_info);
-    if (novo->info = NULL){
+int insere_fim(Lista *l, void *info){
+    if(lista_vazia(*l))
+        return insere_inicio(l, info);
+    Elemento *novo=(Elemento *) malloc(sizeof(Elemento));
+    if(novo==NULL)
+        return 0;
+    novo->info=malloc(l->tamanho_info);
+    if(novo->info==NULL){
         free(novo);
-        return ERRO_FALTA_DE_MEMORIA;
+        return 0;
     }
     Elemento *p = l->cabeca;
     while(p->proximo != NULL){
-        p = p->proximo;
+        p=p->proximo;
     }
-
     memcpy(novo->info, info, l->tamanho_info);
-    novo->proximo = NULL;
-    p->proximo = novo;
-    l->qtd ++;
-    return 1; //Sucesso
+    novo->proximo=NULL;
+    p->proximo=novo;
+    l->qtd++;
+    return 1;
 }
 
 int remove_fim (Lista *l, void *info){
@@ -95,7 +92,6 @@ void mostra_lista (Lista l, void (*mostra_info)(void*)){
     if(lista_vazia(l))
         printf("Lista vazia!\n");
     else{
-        printf("Dados da lista:\n");
         Elemento *p = l.cabeca;
         while(p != NULL){
             mostra_info(p->info); //Invocacao por callback
@@ -121,14 +117,14 @@ int posicaoDoElemento(Lista *l, void *info, int(*comp)(void *, void*)){
 }
 
 int leNaPos(Lista *l, void *info, int pos){
-    if(pos<=l->qtd) {
+    if(pos < 0 || pos >= l->qtd) {
         printf("Posição não existe!\n");
         return 1 == 0;
     }
     Elemento *e = l->cabeca;
-    for(int i=0; i!=pos; i++){
+    for(int i=0; i<pos; i++)
         e=e->proximo;
-    }
+
     memcpy(info, e->info, l->tamanho_info);
 
     return 1;
@@ -149,6 +145,7 @@ int removeDaPos(Lista *l, void *info, int pos){
     p->proximo=p->proximo->proximo;
     free(removido->info);
     free(removido);
+    l->qtd--;
     return 1;
 }
 
@@ -180,4 +177,18 @@ int removeDoFim(Lista *l, void *info) {
     p->proximo=NULL;
     l->qtd--;
     return 1;
+}
+
+void esvaziaLista(Lista *l){
+    if(!lista_vazia(*l))
+        desalocaElementosLista(l->cabeca);
+    free(l);
+}
+
+void desalocaElementosLista(Elemento *e){
+    if(e->proximo!=NULL) {
+        desalocaElementosLista(e->proximo);
+    }
+    free(e->info);
+    free(e);
 }
