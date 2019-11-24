@@ -49,7 +49,9 @@ int uniao(Conjuntos *c, void* rep1, void* rep2, int(*comp)(void*,void*)){
             void *info;
             free(subLista1);
             free(subLista2);
-            return removeDaPos(&c->multi, info, posRep2);
+            removeDaPos(&c->multi, info, posRep2);
+            free (info);
+            return 1;
         }
     }
 
