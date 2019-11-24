@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "listas.h"
+#include "stdlib.h"
 #include "conjuntos.h"
 
 void inicializaConjuntos(Conjuntos *p, int x){
@@ -35,11 +36,10 @@ int uniao(Conjuntos *c, void* rep1, void* rep2, int(*comp)(void*,void*)){
             e=e->proximo;
         }
         if(posRep1 >= 0 && posRep2 >= 0){
-            void *voidLista1, *voidLista2;
-            leNaPos(&c->multi, voidLista1, posRep1);
-            leNaPos(&c->multi, voidLista2, posRep2);
-            Lista *subLista1 = (Lista*)voidLista1;
-            Lista *subLista2 = (Lista*)voidLista2;
+            Lista *subLista1 = malloc(sizeof(Lista*));
+            Lista *subLista2 = malloc(sizeof(Lista*));
+            leNaPos(&c->multi, subLista1, posRep1);
+            leNaPos(&c->multi, subLista2, posRep2);
             Elemento *e = subLista1->cabeca;
             while(e->proximo!=NULL){
                 e=e->proximo;
@@ -47,6 +47,8 @@ int uniao(Conjuntos *c, void* rep1, void* rep2, int(*comp)(void*,void*)){
             e->proximo=subLista2->cabeca;
             subLista1->qtd+=subLista2->qtd;
             void *info;
+            free(subLista1);
+            free(subLista2);
             return removeDaPos(&c->multi, info, posRep2);
         }
     }
@@ -61,6 +63,7 @@ void mostra_conjuntos(Conjuntos *c, void(mostra)(void*)){
     while(e!=NULL){
         Lista *l = e->info;
         mostra_lista(*l, mostra);
+        printf("\n");
         e=e->proximo;
     }
 }
@@ -70,9 +73,10 @@ int insereNoConjunto(Conjuntos *c, void *info, int(*comp)(void*, void*), int pos
         return ERRO_LISTA_VAZIA;
     if(conjuntosPossuemElemento(c, info, comp)== -1)
         return ERRO_LISTA_VAZIA;
-    void *subListaPos;
-    leNaPos(&c->multi, &subListaPos, pos);
+    void *subListaPos=malloc((sizeof(Lista*)));
+    leNaPos(&c->multi, subListaPos, pos);
     insere_fim((Lista*)subListaPos, info);
+    free(subListaPos);
 }
 
 int conjuntosPossuemElemento(Conjuntos *c, void *info, int(*comp)(void*, void*)){
@@ -85,4 +89,39 @@ int conjuntosPossuemElemento(Conjuntos *c, void *info, int(*comp)(void*, void*))
         subListas=subListas->proximo;
     }
     return 1;
+}
+
+int removeConjunto(Conjuntos *c, int pos){
+    if(lista_vazia(c->multi) || pos >= c->multi.qtd || pos < 0)
+        return -1;
+    Elemento *e = c->multi.cabeca;
+    for(int i=0; i<pos; i++)
+        e = e->proximo;
+    desalocaElementosSubLista(e);
+    Lista *voido = malloc(sizeof(Lista*));
+    removeDaPos(&c->multi, voido, pos);
+    free(voido);
+}
+
+void limpaConjuntos(Conjuntos *c){
+    if(lista_vazia(c->multi))
+        return;
+    desalocaSubListas(c->multi.cabeca);
+
+}
+
+void desalocaSubListas(Elemento *e){
+    if(e->proximo!=NULL) {
+        desalocaSubListas(e->proximo);
+    }
+    Elemento *e1 = ((Lista*)e->info)->cabeca;
+    desalocaElementosLista(e1);
+    free(e->info);
+    free(e);
+}
+
+void desalocaElementosSubLista(Elemento *e){
+    if(e->proximo!=NULL) {
+        desalocaElementosSubLista(e->proximo);
+    }
 }

@@ -92,7 +92,6 @@ void mostra_lista (Lista l, void (*mostra_info)(void*)){
 	if(lista_vazia(l))
 		printf("Lista vazia!\n");
 	else{
-		printf("Dados da lista:\n");
 		Elemento *p = l.cabeca;
 		while(p != NULL){
 			mostra_info(p->info); //Invocacao por callback
@@ -146,6 +145,7 @@ int removeDaPos(Lista *l, void *info, int pos){
     p->proximo=p->proximo->proximo;
     free(removido->info);
     free(removido);
+    l->qtd--;
     return 1;
 }
 
@@ -177,4 +177,18 @@ int removeDoFim(Lista *l, void *info) {
     p->proximo=NULL;
     l->qtd--;
     return 1;
+}
+
+void esvaziaLista(Lista *l){
+    if(!lista_vazia(*l))
+        desalocaElementosLista(l->cabeca);
+    free(l);
+}
+
+void desalocaElementosLista(Elemento *e){
+    if(e->proximo!=NULL) {
+        desalocaElementosLista(e->proximo);
+    }
+    free(e->info);
+    free(e);
 }

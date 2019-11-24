@@ -30,5 +30,7 @@ int leNaPos(Lista *l, void *info, int pos);
 int removeDoInicio(Lista *l, void *info);
 int removeDoFim(Lista *l, void *info);
 int removeDaPos(Lista *l, void *info, int pos);
+void esvaziaLista(Lista *l);
+void desalocaElementosLista(Elemento *e);
 
 #endif
