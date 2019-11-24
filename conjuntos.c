@@ -17,23 +17,29 @@ int cria_conjunto (Conjuntos *c, void *representante, int (*comp)(void*, void*))
     }
     Lista l;
     inicializa_lista(&l, c->tamanho_info);
-    return insere_fim(&c->multi, &l);
+    insere_inicio(&l, representante);
+    insere_fim(&c->multi, &l);
 }
 
 int uniao(Conjuntos *c, void* rep1, void* rep2, int(*comp)(void*,void*)){
     int posRep1 = -1, posRep2 = -1;
     if(!lista_vazia(c->multi)){
-        Elemento* subListas= c->multi.cabeca;
-        for(int i=0; i< c->multi.qtd; i++){
-            if(comp(subListas->info, rep1))
+        Elemento *e= c->multi.cabeca;
+        for(int i=0; i<c->multi.qtd; i++){
+            Lista *sub = (Lista*)e->info;
+            if(comp(sub->cabeca->info, rep1)){
                 posRep1 = i;
-            if(comp(subListas->info, rep2))
+            }else if(comp(sub->cabeca->info, rep2)){
                 posRep2 = i;
+            }
+            e=e->proximo;
         }
         if(posRep1 >= 0 && posRep2 >= 0){
-            Lista *subLista1, *subLista2;
-            leNaPos(&c->multi, subLista1, c->tamanho_info);
-            leNaPos(&c->multi, subLista2, c->tamanho_info);
+            void *voidLista1, *voidLista2;
+            leNaPos(&c->multi, voidLista1, posRep1);
+            leNaPos(&c->multi, voidLista2, posRep2);
+            Lista *subLista1 = (Lista*)voidLista1;
+            Lista *subLista2 = (Lista*)voidLista2;
             Elemento *e = subLista1->cabeca;
             while(e->proximo!=NULL){
                 e=e->proximo;
@@ -44,6 +50,7 @@ int uniao(Conjuntos *c, void* rep1, void* rep2, int(*comp)(void*,void*)){
             return removeDaPos(&c->multi, info, posRep2);
         }
     }
+
     return 0;
 }
 
@@ -52,7 +59,8 @@ void mostra_conjuntos(Conjuntos *c, void(mostra)(void*)){
         return;
     Elemento *e=c->multi.cabeca;
     while(e!=NULL){
-        mostra_lista(*(Lista*)e->info, mostra);
+        Lista *l = e->info;
+        mostra_lista(*l, mostra);
         e=e->proximo;
     }
 }
@@ -62,9 +70,9 @@ int insereNoConjunto(Conjuntos *c, void *info, int(*comp)(void*, void*), int pos
         return ERRO_LISTA_VAZIA;
     if(conjuntosPossuemElemento(c, info, comp)== -1)
         return ERRO_LISTA_VAZIA;
-    Lista *subListaPos;
-    leNaPos(&c->multi, subListaPos, pos);
-    insere_fim(subListaPos, info);
+    void *subListaPos;
+    leNaPos(&c->multi, &subListaPos, pos);
+    insere_fim((Lista*)subListaPos, info);
 }
 
 int conjuntosPossuemElemento(Conjuntos *c, void *info, int(*comp)(void*, void*)){
