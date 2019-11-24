@@ -10,9 +10,7 @@ void mostra_float (void *info){ //Mostra um dado float a partir de um ponteiro v
 
 void mostra_int (void *info){ //Mostra um dado int a partir de um ponteiro void
     int *p = (int*)info;
-    printf("[");
-    printf("%d", *p);
-    printf("]");
+    printf("[%d]", *p);
 }
 
 void mostra_char (void *info){ //Mostra um dado char a partir de um ponteiro void
@@ -67,11 +65,12 @@ int main (){
             case 3:
                 printf("Os conjuntos sao:\n");
                 mostra_conjuntos(&conj, mostra_int);
-                system("pause");
                 break;
 
             case 4:
                 printf("Digite o representante do conjunto que recebera a uniao, e o representante do conjunto que sera anexado:\n");
+                printf("Os conjuntos sao:\n");
+                mostra_conjuntos(&conj, mostra_int);
                 printf("Representante da uniao:");
                 scanf("%d", &repre);
                 printf("Representante que sera anexado:");
