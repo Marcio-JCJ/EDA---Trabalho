@@ -10,7 +10,9 @@ void mostra_float (void *info){ //Mostra um dado float a partir de um ponteiro v
 
 void mostra_int (void *info){ //Mostra um dado int a partir de um ponteiro void
     int *p = (int*)info;
-    printf("[%d] ", *p);
+    printf("[");
+    printf("%d", *p);
+    printf("]");
 }
 
 void mostra_char (void *info){ //Mostra um dado char a partir de um ponteiro void
@@ -28,10 +30,11 @@ int main (){
 
     int acao = 0;
     int repre, repre2, valor, conjunto;
+    char resposta;
 
     inicializaConjuntos(&conj, sizeof(int));
     while(acao != 7) {
-        printf("======================================================================\n");
+        printf("==================================================================\n");
         printf("Digite o valor correspondente a interacao desejada:\n");
         printf("1- Cria Conjunto\n");
         printf("2- Insere no Conjunto\n");
@@ -41,8 +44,9 @@ int main (){
         printf("6- Limpa Conjuntos\n");
         printf("7- Sair do Menu\n");
 
+        printf("Opcao:");
         scanf("%d", &acao);
-        printf("======================================================================\n");
+        printf("==================================================================\n");
 
         switch (acao) {
             case 1:
@@ -63,6 +67,7 @@ int main (){
             case 3:
                 printf("Os conjuntos sao:\n");
                 mostra_conjuntos(&conj, mostra_int);
+                system("pause");
                 break;
 
             case 4:
@@ -75,52 +80,32 @@ int main (){
                 break;
 
             case 5:
-                printf("Digite o conjunto a ser removido");
+                printf("Digite o conjunto a ser removido:");
                 scanf("%d", &conjunto);
                 removeConjunto(&conj, conjunto-1);
                 break;
 
             case 6:
                 limpaConjuntos(&conj);
-                printf("Limpeza Concluida!");
+                printf("Limpeza Concluida!\n");
+                printf("Deseja inicializar conjuntos(s/n)?\n");
+                scanf(" %c", &resposta);
+                if(resposta == 's') {
+                    inicializaConjuntos(&conj, sizeof(int));
+                }else{
+                    acao = 7;
+                }
                 break;
 
             case 7:
-                printf("Digite o representante do conjunto a ser criado");
+                printf("Fechando programa");
                 break;
 
             default:
-                printf("Acao invalida");
+                printf("Acao invalida!\n");
 
         }
     }
-    /*
-    int repre1 = 1, repre2=2, repre3=3 ,repre11 = 11, repre12=12, repre13=13;
-    inicializaConjuntos(&conj, sizeof(int));
-    cria_conjunto(&conj, &repre1, inteiroIgual);
-    cria_conjunto(&conj, &repre2, inteiroIgual);
-    cria_conjunto(&conj, &repre3, inteiroIgual);
-    cria_conjunto(&conj, &repre13, inteiroIgual);
-    printf("======================================================================\n");
-    mostra_conjuntos(&conj, mostra_int);
-    printf("====================================\n");
-    uniao(&conj, &repre1, &repre2, inteiroIgual);
-    mostra_conjuntos(&conj, mostra_int);
-    printf("====================================\n");
-    uniao(&conj, &repre1, &repre3, inteiroIgual);
-    mostra_conjuntos(&conj, mostra_int);
-    printf("====================================\n");
-    insereNoConjunto(&conj, &repre11, inteiroIgual, 0);
-    mostra_conjuntos(&conj, mostra_int);
-    printf("====================================\n");
-    insereNoConjunto(&conj, &repre12, inteiroIgual, 1);
-    mostra_conjuntos(&conj, mostra_int);
-    printf("====================================\n");
-    removeConjunto(&conj, 1);
-    mostra_conjuntos(&conj, mostra_int);
-    printf("====================================\n");
-    limpaConjuntos(&conj);
-     */
 
     return 0;
 }

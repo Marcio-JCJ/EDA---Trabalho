@@ -88,7 +88,7 @@ int conjuntosPossuemElemento(Conjuntos *c, void *info, int(*comp)(void*, void*))
     Elemento* subListas = c->multi.cabeca;
     while(subListas!=NULL){
         if(posicaoDoElemento(subListas->info, info, comp)!=-1){
-            printf("Conjuntos já possuem o elemento!\n");
+            printf("Conjuntos ja possuem o elemento!\n");
             return ERRO_LISTA_VAZIA;
         }
         subListas=subListas->proximo;
