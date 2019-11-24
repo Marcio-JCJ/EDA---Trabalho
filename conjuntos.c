@@ -46,7 +46,7 @@ int uniao(Conjuntos *c, void* rep1, void* rep2, int(*comp)(void*,void*)){
             }
             e->proximo=subLista2->cabeca;
             subLista1->qtd+=subLista2->qtd;
-            void *info;
+            void *info = malloc(sizeof(Lista*));
             free(subLista1);
             free(subLista2);
             removeDaPos(&c->multi, info, posRep2);

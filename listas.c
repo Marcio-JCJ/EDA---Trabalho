@@ -143,6 +143,7 @@ int removeDaPos(Lista *l, void *info, int pos){
     }
     Elemento *removido=p->proximo;
     p->proximo=p->proximo->proximo;
+    memcpy(info, removido->info, l->tamanho_info);
     free(removido->info);
     free(removido);
     l->qtd--;
