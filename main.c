@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include "conjuntos.h"
 
@@ -50,5 +51,6 @@ int main (){
     mostra_conjuntos(&conj, mostra_int);
     printf("====================================\n");
     limpaConjuntos(&conj);
-    mostra_conjuntos(&conj, mostra_int);
+
+    return 0;
 }
